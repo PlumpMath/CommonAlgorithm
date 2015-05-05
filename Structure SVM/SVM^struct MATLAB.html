@@ -1,0 +1,389 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <meta>
+  <!-- Favicon -->
+  <link href="../images/vedaldi_favicon.ico" type="image/x-icon" rel="icon"></link>
+  <link href="../images/vedaldi_favicon.ico" type="image/x-icon" rel="shortcut icon"></link>
+
+  <!-- Stylesheets -->
+  <link href="../home.css" type="text/css" rel="stylesheet"></link>
+  <link href="../pygmentize.css" type="text/css" rel="stylesheet"></link>
+
+  <title>A. Vedaldi - Code > SVM^struct MATLAB</title>
+  
+
+  <!-- Google Analytics -->
+  <script xml:space="preserve" type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-818304-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+  <!-- Google custom search -->
+  <script xml:space="preserve">
+    (function() {
+    var cx = '003215582122030917471:0mgx0cyvw6u';
+    var gcse = document.createElement('script'); gcse.type = 'text/javascript'; gcse.async = true;
+    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+    '//www.google.com/cse/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gcse, s);
+    })();
+  </script>
+
+  <!-- More scripts -->
+  <script type="text/javascript" src="../assets/hidebib.js"></script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ </meta>
+
+ <!-- Body Start -->
+ <body>
+  <div id="header">
+   <div class="searchbox">
+     <gcse:searchbox-only autoCompleteMaxCompletions="5" autoCompleteMatchType="any" resultsUrl="http://www.vlfeat.org/~vedaldi/search.html"></gcse:searchbox-only>
+   </div>
+   <!-- <h1>%pagetitle;</h1> -->
+   <h1 id="id-12"><a shape="rect" href="../index.html" class="clean">Andrea Vedaldi</a></h1>
+  </div>
+  <!--
+  <div id="headerbanner">
+    %path;
+  </div>
+  -->
+  <div id="pagebody">
+   <div id="sidebar"> <!-- Navigation Start -->
+    <ul>
+<li><a href="../index.html">Home</a>
+</li>
+<li><a href="../projects.html">Projects</a>
+</li>
+<li><a href="../people.html">Group</a>
+</li>
+<li><a href="../pub.html">Publications</a>
+</li>
+<li><a href="../teach.html">Teaching</a>
+</li>
+<li class='active'><a href="code.html">Code</a>
+<ul>
+<li><a href="vlfeat.html">VLFeat</a>
+</li>
+<li><a href="matconvnet.html">MatConvNet</a>
+</li>
+<li class='active' class='activeLeaf'><a href="svm-struct-matlab.html">SVM^struct MATLAB</a>
+</li>
+<li><a href="vlpovy.html">VLPov</a>
+</li>
+<li><a href="educational.html">Educational</a>
+</li>
+</ul></li>
+</ul>
+
+   </div> <!-- sidebar -->
+   <div id="content">
+    
+
+
+
+  <p><b>svm-struct-matlab</b> is a MATLAB wrapper of
+    T. Joachims' <a shape="rect" href="http://www.cs.cornell.edu/People/tj/svm_light/svm_struct.html">SVM<sup>struct</sup></a>.It
+    simplifies coding your own structural SVM instances by means of
+    simple MATLAB function callbacks. If you use this software in
+    research, please cite it according
+    to <a shape="rect" href="http://www.cs.cornell.edu/People/tj/svm_light/svm_struct.html">T. Joachims'
+    guidelines</a>. Please consider citing also:</p>
+
+  <div style="padding:0 2em" class="pub" id="vedaldi11svm-struct-matlab">A. Vedaldi, A MATLAB wrapper
+  of SVM<sup>struct</sup>, <br clear="none"/><span class="conf">http://www.vlfeat.org/~vedaldi/code/
+  svm-struct-matlab.html</span>,
+  2008. <span class="links"><a shape="rect" href="javascript:togglebib('vedaldi11svm-struct-matlab')" class="togglebib">BibTeX</a></span>
+<pre style="font-size:.8em;line-height:1.2em;" xml:space="preserve">
+@misc{vedaldi11svm-struct-matlab,
+  Author = {A. Vedaldi},
+  Title = {A {MATLAB} wrapper of $\mathrm{SVM}^\mathrm{struct}$},
+  Year  = {2011},
+  Howpublished = {\url{http://www.vlfeat.org/~vedaldi/code/svm-struct-matlab.html}}
+}
+</pre></div>
+
+ <p>This MATLAB wrapper is distributed under the permissive MIT
+   license. However, this license does not cover SVM<sup>struct</sup>
+   itself, which is instead bundled under its original license.</p>
+
+ <ul>
+   <li><a shape="rect" href="svm-struct-matlab.html#ssvm.download">Changes</a></li>
+   <li><a shape="rect" href="svm-struct-matlab.html#ssvm.download">Download and install</a></li>
+   <li><a shape="rect" href="svm-struct-matlab.html#ssvm.tutorial">Structured SVM tutorial</a></li>
+   <li><a shape="rect" href="svm-struct-matlab.html#ssvm.example">Example: learning a linear SVM</a></li>
+   <li><a shape="rect" href="svm-struct-matlab.html#ssvm.kernel">Example: using a kernel</a></li>
+   <li><a shape="rect" href="svm-struct-matlab.html#ssvm.refs">References</a></li>
+ </ul>
+
+ <h2 id="ssvm.changes">Changes</h2>
+
+ <dl>
+   <dt>1.3</dt><dd>(08/31/2012) Adds support for the <code/>endIterationFn</code> callback.</dd>
+   <dt>1.2</dt><dd>(08/31/2012) Adds support for Xcode 4.0 and Mac OS X 10.7 and greater.</dd>
+   <dt>1.1</dt><dd>(11/12/2011) Adds support for Windows (thansk to Iasonas Kokkinos!).</dd>
+   <dt>1.0</dt><dd>(10/5/2011) Initial release.</dd>
+ </dl>
+
+ <h2 id="ssvm.download">Download and install</h2>
+
+ <ul>
+   <li><a shape="rect" href="../assets/svm-struct-matlab/versions/" onClick="javascript:pageTracker._trackPageview('/downloads/smv-struct-matlab');">Source
+          code (Mac and Linux).</a></li>
+   <li><a shape="rect" href="https://github.com/vedaldi/svm-struct-matlab">Git
+   repository</a>.</li>
+ </ul>
+
+ <p>The archive contains the SVM<sup>struct</sup> wrapper along with
+ the original SVM<sup>struct</sup> code of T. Joachims. To compile the
+ code, you will need MATLAB and a C compiler (typical Xcode under Mac,
+ and GCC under Linux, and Visual C under Windows). On Mac and Linux,
+ assuming that MATLAB <code/>mex</code> command is available on the
+ command line search path, the following command should compile the
+ MEX file implementing the wrapper:</p>
+
+<div class="highlight"><pre><span class="nv">$ </span>make
+</pre></div>
+
+
+ <p>On Windows, start MATLAB instead and run the script:<code/></code></p>
+
+<div class="highlight"><pre><span class="o">&gt;&gt;</span> <span class="n">makefile_windows</span>
+</pre></div>
+
+
+ <p>If all goes well, a file <code/>svm_struct_learn.mex*</code> should
+ be produced. To use the wrapper, you will need only this file and
+ <code/>svm_struct_learn.m</code> for the on-line help. Put it in a
+ location included in MATLAB search path. To test the installation,
+ open MATLAB and run the bundled demo
+ program <code/>test_svm_struct_learn.m</code>:</p>
+
+<div class="highlight"><pre><span class="o">&gt;</span> <span class="n">test_svm_struct_learn</span>
+</pre></div>
+
+
+ <p>This command should learn a linear SVM separating two clouds of 2D
+dots. To use the package you will need a basic understanding of
+structural SVMs. To get started see
+the <a shape="rect" href="svm-struct-matlab.html#ssvm.example">example</a> and
+the <a shape="rect" href="svm-struct-matlab.html#ssvm.refs">references</a>.</p>
+
+<h2 id="ssvm.tutorial">Structured SVM tutorial</h2>
+
+<p>A <b>tutorial introduction</b> to structured SVM can be
+found <a shape="rect" href="../teach.html">here.</a> It contains additional
+example on using SVM<sup>struct</sup> MATLAB beyond the elementary
+examples below.</p>
+
+<h2 id="ssvm.example">Example: learning a linear SVM</h2>
+
+<div style="padding: 0 2em">The complete source code of this example is
+the file <code/>test_svm_struct_learn.m</code>.</div>
+
+<p>The function <code/>svm_struct_learn</code> is called as
+follows:</p>
+<div class="highlight"><pre><span class="n">parm</span><span class="p">.</span><span class="n">patterns</span> <span class="p">=</span> <span class="n">patterns</span> <span class="p">;</span>
+<span class="n">parm</span><span class="p">.</span><span class="n">labels</span> <span class="p">=</span> <span class="n">labels</span> <span class="p">;</span>
+<span class="n">parm</span><span class="p">.</span><span class="n">lossFn</span> <span class="p">=</span> <span class="p">@</span><span class="n">lossCB</span> <span class="p">;</span>
+<span class="n">parm</span><span class="p">.</span><span class="n">constraintFn</span>  <span class="p">=</span> <span class="p">@</span><span class="n">constraintCB</span> <span class="p">;</span>
+<span class="n">parm</span><span class="p">.</span><span class="n">featureFn</span> <span class="p">=</span> <span class="p">@</span><span class="n">featureCB</span> <span class="p">;</span>
+<span class="n">parm</span><span class="p">.</span><span class="n">dimension</span> <span class="p">=</span> <span class="mi">2</span> <span class="p">;</span>
+<span class="n">args</span> <span class="p">=</span> <span class="s">&#39; -c 1.0 -o 1 -v 1 &#39;</span> <span class="p">;</span>
+<span class="n">model</span> <span class="p">=</span> <span class="n">svm_struct_learn</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span> <span class="p">;</span>
+</pre></div>
+
+<p>where</p>
+<ul>
+<li><code/>param.patterns</code> is a cellarray of patterns (inputs).</li>
+<li><code/>param.labels</code> is a cellarray of labels (outputs).</li>
+<li><code/>param.lossFn</code> is the loss function callback.</li>
+<li><code/>param.constraintFn</code> is the constraint generation callback.</li>
+<li><code/>param.featureFn</code> is the feature map callback.</li>
+<li><code/>param.dimension</code> is the feature dimension.</li>
+<li><code/>args</code> are
+the SVM<sup>struct</sup>
+<a shape="rect" href="http://www.cs.cornell.edu/people/tj/svm_light/svm_struct.html">parameters</a>.</li>
+</ul>
+
+<p>We now show how to use <code/>svm_struct_learn</code> to learn a
+linear SVM \(\mathbf{w} \in \mathbb{R}^2\) separating a set of 2D
+points with binary labels
+\((\mathbf{x}_1,y_n),\dots,(\mathbf{x}_n,y_n) \in \mathbb{R}^2 \times
+\{-1,+1\}\). The goal is to learn a predictor (input-output map)
+\(\mathbf{x}\mapsto
+ y\) that fits the training data (while being
+sufficiently smooth). The structural SVM formulation of the predictor
+is
+
+$$
+ \hat y(\mathbf{x}) = \operatorname{argmax}_{y\in\{-1,+1\}}
+ F(\mathbf{x},y;\mathbf{w}),
+\quad
+ F(\mathbf{x},y;\mathbf{w})
+ =\langle \mathbf{w}, \Psi(\mathbf{x},y)\rangle
+$$
+
+where \(\mathbf{w}\) is the parameter vector to be learned,
+\(\Psi(\mathbf{x},y)\in\mathbf{R}^2\) is the <em>joint feature
+map</em>, and \(F(\mathbf{x},y;\mathbf{w})\) is an auxiliary function
+usually interpreted as a <em>compatibility score</em> between the input
+\(\mathbf{x}\) and the output \(y\).</p>
+
+<p>In this example we define simply
+\(\Psi(\mathbf{x},y)=\mathbf{x}y/2\), which ultimately will make the
+structures SVM formulation equivalent to a standard binary SVM. The
+feature map is implemented by the code</p>
+
+<div class="highlight"><pre><span class="k">function</span><span class="w"> </span>w <span class="p">=</span><span class="w"> </span><span class="nf">featureCB</span><span class="p">(</span>param, x, y<span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="n">w</span> <span class="p">=</span> <span class="n">sparse</span><span class="p">(</span><span class="n">y</span><span class="o">*</span><span class="n">x</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="p">;</span>
+<span class="k">end</span>
+</pre></div>
+
+
+<p>Then we define a loss function \(\Delta(y,\hat y)\) measuring how
+well the prediction \(\hat y\) matches the ground truth \(y\). We use
+the 01-loss here, which, for our binary labels, writes \(\Delta(y,\hat
+y) = (1 - y\hat y) / 2\). The loss is implemented by</p>
+
+<div class="highlight"><pre><span class="k">function</span><span class="w"> </span>delta <span class="p">=</span><span class="w"> </span><span class="nf">lossCB</span><span class="p">(</span>param, y, ybar<span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="n">delta</span> <span class="p">=</span> <span class="n">double</span><span class="p">(</span><span class="n">y</span> <span class="o">~=</span> <span class="n">ybar</span><span class="p">)</span> <span class="p">;</span>
+<span class="k">end</span>
+</pre></div>
+
+
+<p>Finally, we need to define the constraint generation function,
+which captures the structure of the problem. Generating a constraint
+for an input-output pair \((\mathbf{x},y)\) means identifying what is
+the most incorrect output \(\hat y\) that the current model still deem
+to be compatible with the input \(\mathbf{x}\). Mathematically, this
+amounts to solving
+
+$$
+\max_{\hat y \in\{-1,+1\}} \Delta(y,\hat y)
++ \langle \Psi(\mathbf{x},\hat y) , \mathbf{w} \rangle -
+  \langle \Psi(\mathbf{x},y) , \mathbf{w} \rangle
+$$
+
+for the so called <em>margin rescaling</em> formulation and
+
+$$
+\max_{\hat y \in\{-1,+1\}} \Delta(y,\hat y)[1
++ \langle \Psi(\mathbf{x},\hat y) , \mathbf{w} \rangle -
+  \langle \Psi(\mathbf{x},y) , \mathbf{w} \rangle].
+$$
+
+for the <em>slack rescaling</em> formulation. In this simple example
+the two formulations coincide and are implemented by</p>
+
+<div class="highlight"><pre><span class="k">function</span><span class="w"> </span>yhat <span class="p">=</span><span class="w"> </span><span class="nf">constraintCB</span><span class="p">(</span>param, model, x, y<span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span> <span class="nb">dot</span><span class="p">(</span><span class="n">y</span><span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="n">model</span><span class="p">.</span><span class="n">w</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="n">yhat</span> <span class="p">=</span> <span class="n">y</span> <span class="p">;</span> <span class="k">else</span> <span class="n">yhat</span> <span class="p">=</span> <span class="o">-</span> <span class="n">y</span> <span class="p">;</span> <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+
+
+<p>Note that the function accesses the current model weight vector
+\(\mathbf{w}\) as <code/>model.w</code>.</p>
+
+<p>The SVM-struct parameters <code/>-c 1.0</code> sets the C constant
+of the SVM to 1.0, <code/>-o 1</code> sets the formulation to slack
+rescaling, and <code/>-v 1</code> increases the verbosity level.</p>
+
+<h2 id="ssvm.kernel">Example: using a kernel</h2>
+
+<div style="padding: 0 2em">The complete source code of this example
+is the file <code/>test_svm_struct_learn_ker.m</code>.</div>
+
+<p>The code supports using a kernel rather than an explicit feature
+map. This is not particularly recommended with structural SVMs due to
+speed considerations (there are usually too many support vectors to
+make this efficient), and is particularly slow with this MATLAB
+wrapper due to the necessity of calling a MATLAB function for each
+kernel evaluation. The support is included for completeness.</p>
+
+<p>The <code/>svm_struct_learn</code> function is called as</p>
+<div class="highlight"><pre><span class="n">parm</span><span class="p">.</span><span class="n">patterns</span> <span class="p">=</span> <span class="n">patterns</span> <span class="p">;</span>
+<span class="n">parm</span><span class="p">.</span><span class="n">labels</span> <span class="p">=</span> <span class="n">labels</span> <span class="p">;</span>
+<span class="n">parm</span><span class="p">.</span><span class="n">lossFn</span> <span class="p">=</span> <span class="p">@</span><span class="n">lossCB</span> <span class="p">;</span>
+<span class="n">parm</span><span class="p">.</span><span class="n">constraintFn</span>  <span class="p">=</span> <span class="p">@</span><span class="n">constraintCB</span> <span class="p">;</span>
+<span class="n">parm</span><span class="p">.</span><span class="n">kernelFn</span> <span class="p">=</span> <span class="p">@</span><span class="n">kernelCB</span> <span class="p">;</span>
+<span class="n">args</span> <span class="p">=</span> <span class="s">&#39; -c 1.0 -o 1 -v 1 &#39;</span> <span class="p">;</span>
+<span class="n">model</span> <span class="p">=</span> <span class="n">svm_struct_learn</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span> <span class="p">;</span>
+</pre></div>
+
+<p>Instead of the feature callback, there is now a kernel callback
+which computes the joint kernel \(K(\mathbf{x},y,\mathbf{x}',y')\).
+For the binary linear SVM equivalent of the previous example
+\(K(\mathbf{x},y,\mathbf{x}',y')=yy'\langle\mathbf{x},\mathbf{x'}\rangle/4\)
+this is defined as</p>
+<div class="highlight"><pre><span class="k">function</span><span class="w"> </span>k <span class="p">=</span><span class="w"> </span><span class="nf">kernelCB</span><span class="p">(</span>param, x,y, xp, yp<span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="n">k</span> <span class="p">=</span> <span class="n">x</span><span class="o">&#39;</span> <span class="o">*</span> <span class="n">xp</span> <span class="o">*</span> <span class="n">y</span> <span class="o">*</span> <span class="n">yp</span> <span class="o">/</span> <span class="mi">4</span> <span class="p">;</span>
+<span class="k">end</span>
+</pre></div>
+
+<p>The loss function is the same as before, whereas the constraint
+generation function needs to be modified to use the kernel as</p>
+
+<div class="highlight"><pre><span class="k">function</span><span class="w"> </span>ybar <span class="p">=</span><span class="w"> </span><span class="nf">constraintCB</span><span class="p">(</span>param, model, x, y<span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span> <span class="nb">size</span><span class="p">(</span><span class="n">model</span><span class="p">.</span><span class="n">svPatterns</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="n">w</span> <span class="p">=</span> <span class="nb">zeros</span><span class="p">(</span><span class="nb">size</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="p">;</span>
+  <span class="k">else</span>
+    <span class="n">w</span> <span class="p">=</span> <span class="nb">cat</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">model</span><span class="p">.</span><span class="n">svPatterns</span><span class="p">{:})</span> <span class="o">*</span> <span class="c">...</span>
+      <span class="p">(</span><span class="n">model</span><span class="p">.</span><span class="n">alpha</span> <span class="o">.*</span> <span class="nb">cat</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">model</span><span class="p">.</span><span class="n">svLabels</span><span class="p">{:}))</span> <span class="o">/</span> <span class="mi">2</span> <span class="p">;</span>
+  <span class="k">end</span>
+  <span class="k">if</span> <span class="nb">dot</span><span class="p">(</span><span class="n">y</span><span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ybar</span> <span class="p">=</span> <span class="n">y</span> <span class="p">;</span> <span class="k">else</span> <span class="n">ybar</span> <span class="p">=</span> <span class="o">-</span><span class="n">y</span> <span class="p">;</span> <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+
+
+<p>Note that with a kernel the model weight vector \(\mathbf{w}\) is
+defined only implicitly. In particular, the input <code/>model</code>
+contains the dual variables
+<code/>model.alpha</code> and the support vectors in the form of a cell
+array of patterns <code/>model.svPatterns</code> and corresponding
+labels <code/>model.svLabels</code>. In this simple example the feature
+map is trivial and the information in <code/>model</code> is used to
+reconstruct the weight vector \(\mathbf{w}\)
+.</p>
+
+ <h2 id="ssvm.refs">References</h2>
+<ol>
+  <li id="ssvm.ref1">T. Joachims, Learning to Align Sequences: A Maximum Margin Approach.
+    Technical Report, September, 2003.</li>
+  <li id="ssvm.ref2">I. Tsochantaridis, T. Joachims, T. Hofmann, and Y. Altun, Large Margin
+    Methods for Structured and Interdependent Output Variables, Journal
+    of Machine Learning Research (JMLR), Vol. 6(Sep):1453-1484, 2005.</li>
+  <li id="ssvm.ref3"> T. Joachims, Making Large-Scale SVM Learning Practical. Advances in
+    Kernel Methods - Support Vector Learning, B. Sch&ouml;lkopf and C. Burges and
+    A. Smola (ed.), MIT Press, 1999.</li>
+  <li id="ssvm.ref4">T. Joachims, Learning to Classify Text Using Support Vector
+    Machines: Methods, Theory, and Algorithms. Dissertation, Kluwer,
+    2002.</li>
+  <li id="ssvm.ref5">T. Joachims, T. Finley, Chun-Nam Yu, Cutting-Plane Training of Structural
+    SVMs, Machine Learning Journal, to appear.</li>
+</ol>
+
+<script xml:space="preserve" language="JavaScript">
+hideallbibs();
+</script>
+
+
+   </div>
+   <div class="clear">&nbsp;</div>
+  </div> <!-- pagebody -->
+  <div id="footer">
+   Copyright &copy; 2005-14 Andrea Vedaldi
+  </div> <!-- footer -->
+ </body>
+</html>
+
+ 

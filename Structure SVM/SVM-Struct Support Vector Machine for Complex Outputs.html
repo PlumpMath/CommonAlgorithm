@@ -1,0 +1,265 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft FrontPage 6.0">
+<TITLE>SVM-Struct Support Vector Machine for Complex Outputs</TITLE>
+<META NAME="Version" CONTENT="8.0.3514">
+<META NAME="Date" CONTENT="11/26/96">
+<META NAME="Template" CONTENT="C:\Programme\Microsoft Office\Office\HTML.DOT">
+</HEAD>
+
+<BODY vLink=#800080 link=#0000ff bgColor=#ffffff>
+<TABLE cellSpacing=0 cellPadding=5 border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=top width="14%">
+      <H2><IMG height=80 src="../images/culogo_125.gif" width=80></H2></TD>
+    <TD vAlign=top width="75%">
+      <H1 align=center>SVM<I><SUP>struct</SUP> </H1></I>
+      <H1 align=center>Support Vector Machine for Complex Outputs</H1><FONT color=#000000>
+      <P align=center>Author: </FONT><A href="http://www.joachims.org/" 
+      target=_top>Thorsten Joachims</A><FONT color=#000000> &lt;</FONT><A 
+      href="mailto:thorsten@joachims.org">thorsten@joachims.org</A><FONT 
+      color=#000000>&gt; <BR></FONT><A href="http://www.cornell.edu/" 
+      target=_top>Cornell University</A><FONT color=#000000> <BR></FONT><A 
+      href="http://www.cs.cornell.edu/" target=_top>Department of Computer 
+      Science</A><FONT color=#000000> </P>
+
+      <P align=center>Version: 3.10 <BR>Date: 14.08.2008</FONT></P></TD>
+    <TD vAlign=top width="11%">
+      <H2><IMG height=80 src="../images/culogo_125.gif" 
+  width=80></H2></TD></TR></TBODY></TABLE>
+
+<H2>Overview</H2>
+
+<P><I>SVM<SUP>struct</SUP></I> is a Support Vector Machine (SVM) algorithm for predicting multivariate 
+or structured outputs. It performs supervised learning by approximating a mapping</p>
+                            <center><i>h: X --&gt; Y</i></center>
+<p>using labeled training examples <tt>(x<SUB>1</SUB>,y<SUB>1</SUB>), ..., (x<SUB>n</SUB>,y<SUB>n</SUB>)</tt>. Unlike regular SVMs, however, which consider only univariate predictions like in classification and regression, <I>SVM<SUP>struct</SUP></I> can predict complex objects <tt>y</tt> like trees, sequences, or sets. Examples of problems with complex outputs are natural language parsing, sequence alignment in protein homology detection, and markov models for part-of-speech tagging. 
+The <I>SVM<SUP>struct </SUP></I> algorithm can also be used for linear-time 
+training of binary and multi-class SVMs under the linear kernel [4].</P>
+
+<P>The 1-slack cutting-plane algorithm implemented in <I>SVM<SUP>struct</SUP></I> 
+V3.10 uses a new but equivalent formulation of the structural SVM quadratic 
+program and is several orders of magnitude faster than prior methods. The 
+algorithm is described in [5]. The n-slack algorithm of <I>SVM<SUP>struct</SUP></I> 
+V2.50 is described in [1][2]. The <I>SVM<SUP>struct </SUP></I> implementation is based on the <a href="./index.html"><I>SVM<SUP>light</SUP></I></a> quadratic optimizer [3].</P>
+
+
+<H2>Existing Instantiations</H2>
+
+<P><I>SVM<SUP>struct</SUP></I> can be thought of as an API for implementing different kinds of complex prediction algorithms. Currently, we have implemented the following learning tasks:
+<UL>
+<LI><B><I>SVM<sup>struct</sup> Python</I></B>: A python interface to the <I>SVM<SUP>struct</SUP></I> API 
+for implementing your own structured prediction method. The Python 
+interface makes prototyping much easier and faster than working in C.<BR><a href="http://www.cs.cornell.edu/~tomf/svmpython2/">More information and source code.</a> </LI>
+<LI><B><I>SVM<sup>struct</sup> Matlab</I></B>: A matlab interface to the <I>SVM<SUP>struct</SUP></I> API 
+for implementing your own structured prediction method. Again, prototyping should be much easier and faster than working in C.<BR><a href="http://www.vlfeat.org/~vedaldi/code/svm-struct-matlab.html">More information and source code.</a> </LI>
+<LI><B><I>Latent SVM<sup>struct</sup></I></B>: Training of structural SVM predictions rules when the training labels are not fully observed (e.g. unobserved dependency structure in NP-coref, motif finding, ranking with weak orderings).<BR><a href="http://www.cs.cornell.edu/~cnyu/latentssvm/">More information and source code.</a> </LI>
+<LI><B><I>SVM<SUP>multiclass</SUP></I></B>: Multi-class classification. Learns to predict one of <tt>k</tt> mutually exclusive classes. This is probably the simplest possible instance of <I>SVM<SUP>struct</SUP></I> and serves as a tutorial example of how to use the programming interface.<BR><a href="svm_multiclass.html">More information and source code.</a> </LI>
+<LI><B><I>SVM<SUP>cfg</SUP></I></B>: Learns a weighted context free grammar from examples. Training examples (e.g. for natural language parsing) specify the sentence along with the correct parse tree. The goal is to predict the parse tree of new sentences. <BR><a href="svm_cfg.html">More information and source code.</a> </LI>
+<LI><B><I>SVM<SUP>align</SUP></I></B>: Learning to align sequences. Given 
+examples of how sequence pairs align, the goal is to learn a complex 
+substitution and insertion/deletion model so that one can predict alignments of new sequences. <BR>
+<a href="http://www.cs.cornell.edu/~cnyu/svm_alignment/">More information and source code.</a> </LI>
+<LI><B><I>SVM<SUP>hmm</SUP></I></B>: Learns a hidden Markov model from examples. Training examples (e.g. for part-of-speech tagging) specify the sequence of words along with the correct assignment of tags (i.e. states). The goal is to predict the tag sequences for new sentences. 
+<br>
+<a href="svm_hmm.html">More information and source code.</a> </LI>
+<LI><B><I>SVM<SUP>map</SUP></I></B>: Learns rankings that optimize Mean Average 
+Precision (MAP) as the performance metric.<BR>
+<a href="http://svmrank.yisongyue.com/svmmap.php">More information and source code.</a> </LI>
+<LI><B><I>SVM<sup>div</sup></I></B>: Learns to predict diversified rankings and 
+sets for Information Retrieval.<BR>
+<a href="http://projects.yisongyue.com/svmdiv/">More information and source code.</a> </LI>
+<LI><B><I>SVM<SUP>perf</SUP></I></B>: Learns a binary classification rule that 
+directly optimizes ROC-Area, F1-Score, or the Precision/Recall Break-Even Point. 
+It is also a training algorithm for conventional linear binary classification 
+SVMs that can be orders of magnitude faster than SVM-light for large datasets.<BR>
+<a href="svm_perf.html">More information and source code.</a> </LI>
+<LI><B><I>SVM<sup>rank</sup></I></B>: Learns a rule for predicting rankings as 
+typically used in search engines and other retrieval systems. It is equivalent 
+to SVM-light in '-z p' mode, but it is a much more efficient algorithm for 
+training Ranking SVMs.<BR>
+<a href="svm_rank.html">More information and source code.</a> </LI>
+<LI><B><I>SVM<sup>pairMRF</sup></I></B>: Semantic scene labeling for 3D point cloud data. Basically learns a general Markov Random Field model with pairwise potentials and can be used beyond that specific application.<BR>
+<a href="http://pr.cs.cornell.edu/sceneunderstanding/data/data.php">More information and source code.</a> </LI>
+<LI><B><I>SVM<sup>sle</sup></I></B>: Learning algorithm for predicting document-level sentiment polarities with latent explanations.<BR>
+<a href="http://projects.yisongyue.com/svmsle/">More information and source code.</a> </LI>
+<LI><B><I>SVM<sup>struct</sup> for activity recognition</I></B>: Learning algorithm for training activity recognizers for video.<BR>
+<a href="https://staff.fnwi.uva.nl/n.hu//activity_recognition.html">More information and source code.</a> </LI>
+<LI><B><I>SVM<sup>struct</sup> for web-page segmentation</I></B>: Learning algorithm for segmenting web pages based on directed acyclic graph structure.<BR>
+<a href="http://www1.se.cuhk.edu.hk/~textmine/?q=code/segmentaion">More information and source code.</a> </LI>
+</UL>
+Please let me know, if you want me to add your implementations to this list.
+
+
+<H2>Source Code for Implementing your Own Instantiation</H2>
+
+Instead of using one of the existing instantiations of <I>SVM<SUP>struct</SUP></I> listed above, you can implement your own. <I>SVM<SUP>struct</SUP></I> contains an API that let's you specialize the general sparse approximation training algorithm for your particular application. Referring to the algorithm as presented in [1], you merely need to provide the code for the following:
+<UL>
+<LI> A function for computing the feature vector Psi.
+<LI> A function for computing the argmax over the (kernelized) linear discriminant function.
+<LI> A function for computing the argmax over the loss-augmented (kernelized) linear discriminant function.
+<LI> A loss function.
+</UL>
+You can download the source code of the algorithm and the API from the following location:
+<P><PRE>      <a href=http://download.joachims.org/svm_struct/current/svm_struct.tar.gz>http://download.joachims.org/svm_struct/current/svm_struct.tar.gz</a></PRE>
+<p>If you are not so eager on C programming, then you might want to look at the
+<a href="http://tfinley.net/software/svmpython2/">Python API</I></a> 
+by <a href="http://www.tfinley.net/">Thomas Finley</a> or the <a href="http://www.vlfeat.org/~vedaldi/code/svm-struct-matlab.html">Matlab API</a> 
+by <a href="http://www.vlfeat.org/~vedaldi/index.html">Andrea Vedaldi</a>. They make it substantially easier to prototype in than using the original C API, but offer essentially the same functionality and call the original C-code internally. Also, both the Pyton and the Matlab APIs are identical 
+in their structure to the C API described below, so it is easy to switch between 
+them.</p>
+<p>If you decide to use the C version, the file you downloaded above contains the source code of the most recent version of <I>SVM<SUP>struct</SUP></I> as well as the source code of the <I>SVM<SUP>light</SUP></I> quadratic optimizer. Unpack the archive using the shell command:
+</p>
+<P><PRE>      gunzip –c svm_struct.tar.gz | tar xvf –</PRE></P>
+This expands the archive into the current directory, which now contains all relevant files. You can compile <I>SVM<SUP>struct</SUP></I> 
+with the empty API using the command
+<P><PRE>      make</PRE></P>
+in the root directory of the archive.
+It will output some warnings, since the functions of the API are only templates and do not return values as required. However, it should produce the executables <tt>svm_empty_learn</tt> <tt>svm_empty_classify</tt>. "<tt>empty</tt>" is a placeholder where you can substitute a meaningful name for your particular instance of <I>SVM<SUP>struct</SUP></I>. To implement your own instantiation, you will need to edit the following files:
+<UL>
+<LI><tt>svm_struct_api_types.h</tt>
+<LI><tt>svm_struct_api.c</tt>
+</UL>
+Both files already contain empty templates. The first file contains the type definitions that need to be changed. PATTERN is the structure for storing the x-part of an example (x,y), LABEL is the y-part. The learned model will be stored in STRUCTMODEL. Finally, STRUCT_LEARN_PARM can be used to store any parameters that you might want to pass to the function. The file <tt>svm_struct_api.h</tt> contains the functions you need to implement. See the documentation in the file for details. You might also want to look at the other instantiations of <I>SVM<SUP>struct</SUP></I> for examples of how to use the API.
+
+
+<p>Finally, you can also implement your own structural SVM training algorithm in <I>SVM<SUP>struct</SUP></I> 
+using the file <tt>svm_struct_learn_custom.c</tt>. By putting your algorithm 
+into the empty function there, you can access the API and all the 
+instance-specific functions that the algorithms already implemented in <I>SVM<SUP>struct</SUP></I> 
+are using. Your custom algorithm is then selected via the
+<font face="Courier New">-w 9</font> option. This makes it easy to test new 
+algorithms and compare them against the existing algorithms.</p>
+
+
+<H2>How to Use</H2>
+
+Compiling creates the executable <tt>svm_empty_learn</tt>, which performs the learning, and the executable <tt>svm_empty_classify</tt> for classifying new examples. Usage is much like <I>SVM<SUP>light</SUP></I>. You call it like 
+<P><PRE>      svm_empty_learn -c 1.0 train.dat model.dat</PRE></P>
+which trains an SVM on the training set <tt>train.dat</tt> and outputs the learned rule to <tt>model.dat</tt> using the regularization parameter <tt>C</tt> set to <tt>1.0</tt> (note that this crashes for the empty API -- use one of the other instantiations from above for a working example). The format of the train file and the model file depend on the particular instantiation of <I>SVM<SUP>struct</SUP></I>. Other options are:
+<PRE>
+General Options:
+         -?          -> this help
+         -v [0..3]   -> verbosity level (default 1)
+         -y [0..3]   -> verbosity level for svm_light (default 0)
+Learning Options:
+         -c float    -> C: trade-off between training error
+                        and margin (default 0.01)
+         -p [1,2]    -> L-norm to use for slack variables. Use 1 for L1-norm,
+                        use 2 for squared slacks. (default 1)
+         -o [1,2]    -> Rescaling method to use for loss.
+                        1: slack rescaling
+                        2: margin rescaling
+                        (default 2)
+         -l [0..]    -> Loss function to use.
+                        0: zero/one loss
+                        ?: see below in application specific options
+                        (default 0)
+Optimization Options (see [2][5]):
+         -w [0,..,9] -> choice of structural learning algorithm (default 3):
+                        0: n-slack algorithm described in [1]
+                        1: n-slack algorithm with shrinking heuristic
+                        2: 1-slack algorithm (primal) described in [5]
+                        3: 1-slack algorithm (dual) described in [5]
+                        4: 1-slack algorithm (dual) with constraint cache [5]
+                        9: custom algorithm in svm_struct_learn_custom.c
+         -e float    -> epsilon: allow that tolerance for termination
+                        criterion (default 0.100000)
+         -k [1..]    -> number of new constraints to accumulate before
+                        recomputing the QP solution (default 100) (-w 0 and 1 only)
+         -f [5..]    -> number of constraints to cache for each example
+                        (default 5) (used with -w 4)
+         -b [1..100] -> percentage of training set for which to refresh cache
+                        when no epsilon violated constraint can be constructed
+                        from current cache (default 100%) (used with -w 4)
+SVM-light Options for Solving QP Subproblems (see [3]):
+         -n [2..q]   -> number of new variables entering the working set
+                        in each svm-light iteration (default n = q).
+                        Set n < q to prevent zig-zagging.
+         -m [5..]    -> size of svm-light cache for kernel evaluations in MB
+                        (default 40) (used only for -w 1 with kernels)
+         -h [5..]    -> number of svm-light iterations a variable needs to be
+                        optimal before considered for shrinking (default 100)
+         -# int      -> terminate svm-light QP subproblem optimization, if no
+                        progress after this number of iterations.
+                        (default 100000)
+Kernel Options:
+         -t int      -> type of kernel function:
+                        0: linear (default)
+                        1: polynomial (s a*b+c)^d
+                        2: radial basis function exp(-gamma ||a-b||^2)
+                        3: sigmoid tanh(s a*b + c)
+                        4: user defined kernel from kernel.h
+         -d int      -> parameter d in polynomial kernel
+         -g float    -> parameter gamma in rbf kernel
+         -s float    -> parameter s in sigmoid/poly kernel
+         -r float    -> parameter c in sigmoid/poly kernel
+         -u string   -> parameter of user defined kernel
+Output Options:
+         -a string   -> write all alphas to this file after learning
+                        (in the same order as in the training set)
+Application-Specific Options:
+         --* string  -> custom parameters that can be adapted for struct
+                        learning. The * can be replaced by any character
+                        and there can be multiple options starting with --.
+</PRE>
+For more details on the meaning of these options consult references [1][3][5] and the <A href="index.html">description of <I>SVM<SUP>light</SUP></I></A>. The options starting with <tt>--</tt> are those specific to the instantiation 
+and are specified via the API. 
+
+
+<H2>Disclaimer</H2>
+
+<P>This software is free only for non-commercial use. It must not be distributed without prior permission of the author. The author is not responsible for implications from the use of this software. </P>
+<FONT COLOR="#000000">
+
+<H2>Known Problems</H2>
+<ul>
+  <li>none</li>
+</ul>
+</font>
+<H2>History</H2>
+
+
+<FONT COLOR="#000000">
+
+<H4>V3.00 - 3.10</H4>
+<UL>
+<LI>Reimplementation of -w 3 and -w 4 algorithms to improve memory management 
+and speed.<LI>Added &quot;mini-batch&quot; updates via the -b option.<LI>
+Added the option to implement additional algorithms in <tt>svm_struct_learn_custom.c </tt>
+and select them via -w 9.<LI>
+Fixed bug in RBF Kernel.<LI>Fixed precision issues on 64-bit AMD and Intel 
+machines.
+<LI>Cleaned up the API to improve passing optional arguments to the 
+classification module.<LI>Source code for <a href="old/svm_struct_v3.00.html"> <I>SVM<SUP>struct</SUP></I> 
+V3.00</a>.</UL>
+
+<H4>V2.00 - 3.00</H4>
+<UL>
+<LI>This version implements a new algorithm for structural SVM training (options 
+-w 2, -w 3, -w 4). The algorithm is based on an alternative formulation of the 
+structural SVM training problem that has the same solution as the conventional 
+formulation. This new one-slack formulation allows a cutting-plane algorithm 
+that has time complexity linear in the number of training examples. For large 
+datasets, it is several orders of magnitude faster than the old cutting-plane 
+algorithm.<LI>New IO 
+routines that are faster for reading large data and model files.
+<LI>Source code for <a href="old/svm_struct_v2.00.html"> <I>SVM<SUP>struct</SUP></I> 
+V2.00</a>.</UL>
+
+</font>
+
+
+<H2>References</H2>
+
+<P><B>[1]</B> I. Tsochantaridis, T. Hofmann, T. Joachims, and Y. Altun. Support Vector Learning for Interdependent and Structured Output Spaces, ICML, 2004. <a href="../publications/tsochantaridis_etal_04a.ps.gz">[Postscript 
+(gz)]</a> <a href="../publications/tsochantaridis_etal_04a.pdf">[PDF]</a> [<a href="http://www.joachims.org/publications/joachims.bib">BibTeX</a>]</P>
+<P><B>[2]</B> T. Joachims. Learning to Align Sequences: A Maximum Margin Approach, Technical Report, August, 2003. <a href="../publications/joachims_03b.ps.gz">[Postscript 
+(gz)]</a> <a href="../publications/joachims_03b.pdf">[PDF]</a> [<a href="http://www.joachims.org/publications/joachims.bib">BibTeX</a>]</P>
+<P><B>[3]</B> T. Joachims, Making Large-Scale SVM Learning Practical. Advances in Kernel Methods - Support Vector Learning, B. Schölkopf and C. Burges and A. Smola (ed.), MIT Press, 1999. <a href="../publications/joachims_99a.ps.gz">[Postscript (gz)]</a> <a href="../publications/joachims_99a.pdf">[PDF]</a> [<a href="http://www.joachims.org/publications/joachims.bib">BibTeX</a>]</P>
+<P><B>[4]</B> T. Joachims, Training Linear SVMs in Linear Time, Proceedings of the ACM Conference on Knowledge Discovery and Data Mining (KDD), 2006. <a href="http://www.cs.cornell.edu/People/tj/publications/joachims_06a.ps.gz">[Postscript (gz)]</a> <a href="http://www.cs.cornell.edu/People/tj/publications/joachims_06a.pdf">[PDF]</a> [<a href="http://www.joachims.org/publications/joachims.bib">BibTeX</a>]</P>
+<P><b>[5] </b>T. Joachims, T. Finley, Chun-Nam Yu, Cutting-Plane Training of 
+Structural SVMs, Machine Learning Journal, 77(1):27-59, 2009.<span lang="EN-GB">    
+    <a style="color: blue; text-decoration: underline; text-underline: single" href="http://www.cs.cornell.edu/People/tj/publications/joachims_etal_09a.pdf">[PDF]</span> [<a href="http://www.joachims.org/publications/joachims.bib">BibTeX</a>]</P>
